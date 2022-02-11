@@ -1,0 +1,39 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "no-loops"
+  ],
+  "rules": {
+    "no-console": 0,
+    "no-loops/no-loops": 2,
+    "react/no-typos": "error",
+    "react/no-unused-state": "error",
+    "react/jsx-no-bind": "error",
+    "array-callback-return": "error",
+    "consistent-return": "error",
+  },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "15.0",
+      "flowVersion": "0.63.1"
+    }
+  }
+}
