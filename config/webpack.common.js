@@ -1,11 +1,14 @@
+const deps = require('../package.json').dependencies;
 const path = require("path");
 const paths = require("./paths");
 
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExternalTemplateRemotesPlugin = require("external-remotes-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
+const { ModuleFederationPlugin } = require("webpack").container;
 
 module.exports = () => {
   const isDevelopment = process.env.NODE_ENV !== "production";
@@ -65,12 +68,28 @@ module.exports = () => {
           { from: paths.src + "/assets", to: "assets" },
         ],
       }),
+      new ModuleFederationPlugin({
+        name: "container",
+        filename: "remoteEntry.js",
+        shared: [
+          {
+            ...deps,
+            react: {
+              requiredVersion: deps["react"],
+            },
+            "react-dom": {
+              requiredVersion: deps["react-dom"],
+            },
+          },
+        ],
+      }),
+      new ExternalTemplateRemotesPlugin(),
     ].filter(Boolean),
     module: {
       rules: [
         {
           test: /\.(ts|tsx)$/,
-          use: 'ts-loader',
+          use: "ts-loader",
           exclude: /node_modules/,
         },
         {
